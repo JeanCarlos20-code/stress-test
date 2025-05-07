@@ -43,7 +43,7 @@ func Execute() {
 func worker(url string, reqs int, results chan<- Result, wg *sync.WaitGroup) {
 	defer wg.Done()
 
-	for i := 0; i < reqs; i++ {
+	for range reqs {
 		start := time.Now()
 		resp, err := http.Get(url)
 		duration := time.Since(start)
@@ -66,7 +66,7 @@ func runLoadTest(url string, totalRequests int, concurrency int) {
 	reqsPerWorker := totalRequests / concurrency
 	extra := totalRequests % concurrency
 
-	for i := 0; i < concurrency; i++ {
+	for i := range concurrency {
 		count := reqsPerWorker
 		if i < extra {
 			count++
